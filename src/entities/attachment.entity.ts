@@ -17,5 +17,5 @@ export class Attachment {
   url: string;
   @ManyToMany(() => Lesson)
   @JoinTable()
-  students: Lesson[];
+  students?: Lesson[];
 }

@@ -16,6 +16,8 @@ import { Course } from './entities/course.entity';
 import { Lesson } from './entities/lesson.entity';
 import { Attachment } from './entities/attachment.entity';
 import { AttachmentModule } from './attachment/attachment.module';
+import { LessonModule } from './lesson/lesson.module';
+import { CourseModule } from './course/course.module';
 
 @Module({
   imports: [
@@ -57,6 +59,8 @@ import { AttachmentModule } from './attachment/attachment.module';
     RolesModule,
     PermissionsModule,
     AttachmentModule,
+    LessonModule,
+    CourseModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService],
