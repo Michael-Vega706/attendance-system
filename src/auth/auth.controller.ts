@@ -16,7 +16,15 @@ import { AuthGuard } from '../guards/auth/auth.guard';
 import { UserModel, UserPayload } from '../models/user.model';
 import { PermissionGuard } from '../guards/permission/permission.guard';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
-import { LoginRequest, TokenResponse } from '../responses/auth.response';
+import {
+  LoginRequest,
+  ProfileResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
+  TokenResponse,
+  UserRegisterResponse,
+  UserRequest,
+} from '../responses/auth.response';
 
 @Controller('auth')
 export class AuthController {
@@ -34,18 +42,24 @@ export class AuthController {
   }
 
   @Post('/register')
+  @ApiBody({
+    type: UserRequest,
+  })
+  @ApiResponse({ status: HttpStatus.CREATED, type: UserRegisterResponse })
   register(@Body(new ValidationPipe()) user: UserModel) {
     return this.authservice.register(user);
   }
 
   @Get('/profile')
   @UseGuards(AuthGuard, PermissionGuard)
+  @ApiResponse({ status: HttpStatus.OK, type: ProfileResponse })
   profile(@Request() request: { user: UserPayload }) {
     const user: UserPayload = request.user;
     return this.authservice.profile(user.id);
   }
 
   @Get('/profile-2')
+  @ApiResponse({ status: HttpStatus.OK, type: ProfileResponse })
   @UseGuards(AuthGuard, PermissionGuard)
   profile2(@Request() request: { user: UserPayload }) {
     const user: UserPayload = request.user;
@@ -53,6 +67,10 @@ export class AuthController {
   }
 
   @Post('/reset-password')
+  @ApiBody({
+    type: ResetPasswordRequest,
+  })
+  @ApiResponse({ status: HttpStatus.CREATED, type: ResetPasswordResponse })
   resetPassword(@Body() body: { email: string }) {
     return this.authservice.resetPassword(body.email);
   }

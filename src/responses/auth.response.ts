@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { UserType } from 'src/entities/user.entity';
 
+/* RESPONSES */
 export class TokenResponse {
   @ApiProperty({
     description: 'Access token to authorize in the api.',
@@ -13,18 +15,6 @@ export class TokenResponse {
   type: string;
 }
 
-export class LoginRequest {
-  @ApiProperty()
-  username: string;
-  @ApiProperty()
-  password: string;
-}
-
-export class CourseStudentRequest {
-  @ApiProperty()
-  hasView: boolean;
-}
-
 export class UserResponse {
   @ApiProperty()
   id: number;
@@ -34,13 +24,22 @@ export class UserResponse {
   email: string;
 }
 
-export class CourseStudentResponse {
+export class ProfileResponse extends UserResponse {
+  @ApiProperty({
+    description: 'Type of user, either TEACHER or STUDENT',
+    enum: UserType,
+    example: UserType.STUDENT,
+  })
+  userType: UserType;
   @ApiProperty()
-  id: number;
+  isActive: boolean;
+}
+
+export class UserRegisterResponse extends ProfileResponse {
   @ApiProperty()
-  student: UserResponse;
+  password: string;
   @ApiProperty()
-  hasView: boolean;
+  hasReset: boolean;
 }
 
 export class HealthyResponse {
@@ -55,4 +54,36 @@ export class ErrorResponse {
   error: string;
   @ApiProperty()
   statusCode: number;
+}
+
+export class ResetPasswordResponse {
+  @ApiProperty()
+  message: string;
+}
+
+/* REQUESTS */
+export class LoginRequest {
+  @ApiProperty()
+  username: string;
+  @ApiProperty()
+  password: string;
+}
+export class UserRequest {
+  @ApiProperty()
+  username: string;
+  @ApiProperty()
+  password: string;
+  @ApiProperty()
+  email: string;
+  @ApiProperty({
+    description: 'Type of user, either TEACHER or STUDENT',
+    enum: UserType,
+    example: UserType.STUDENT,
+  })
+  userType: UserType;
+}
+
+export class ResetPasswordRequest {
+  @ApiProperty()
+  email: string;
 }

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { UserResponse } from './auth.response';
 
-/** RESPONSES */
+/* RESPONSES */
 
 export class AttachmentResponse {
   @ApiProperty({
@@ -61,7 +61,16 @@ export class LessonAttachmentResponse extends LessonResponse {
   resources: [{ id: number }];
 }
 
-/** REQUESTS */
+export class CourseStudentResponse {
+  @ApiProperty()
+  id: number;
+  @ApiProperty()
+  student: UserResponse;
+  @ApiProperty()
+  hasView: boolean;
+}
+
+/* REQUESTS */
 
 export class AttachmentRequest {
   @ApiProperty()
@@ -82,4 +91,9 @@ export class LessonRequest {
   course: number;
   @ApiProperty()
   teacher: number;
+}
+
+export class CourseStudentRequest {
+  @ApiProperty()
+  hasView: boolean;
 }

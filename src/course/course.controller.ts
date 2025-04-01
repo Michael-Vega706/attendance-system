@@ -15,14 +15,12 @@ import { ApiBody, ApiResponse } from '@nestjs/swagger';
 import {
   CourseRequest,
   CourseResponse,
+  CourseStudentRequest,
+  CourseStudentResponse,
   CourseStudentsResponse,
 } from 'src/responses/education.response';
 import { CourseModel } from 'src/models/education.model';
-import {
-  CourseStudentRequest,
-  CourseStudentResponse,
-  ErrorResponse,
-} from 'src/responses/auth.response';
+import { ErrorResponse } from 'src/responses/auth.response';
 
 @Controller('course')
 export class CourseController {
