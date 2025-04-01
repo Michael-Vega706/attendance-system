@@ -1,29 +1,28 @@
 import {
   Column,
   Entity,
+  Index,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Course } from './course.entity';
 import { User } from './user.entity';
-import { Attachment } from './attachment.entity';
 
 @Entity()
-export class Lesson {
+@Index(['course', 'user'], { unique: true })
+export class CourseStudent {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
-  name: string;
+
   @ManyToOne(() => Course)
   @JoinColumn()
   course: Course;
+
   @ManyToOne(() => User)
   @JoinColumn()
-  teacher: User;
-  @ManyToMany(() => Attachment)
-  @JoinTable()
-  resources?: Attachment[];
+  user: User;
+
+  @Column({ default: false })
+  hasView: boolean;
 }

@@ -19,7 +19,7 @@ export class AttachmentService {
     return await this.attachmentepository.find();
   }
 
-  async findOnebyId(id: number) {
+  async findOneById(id: number) {
     return await this.attachmentepository.findOneBy({ id });
   }
 

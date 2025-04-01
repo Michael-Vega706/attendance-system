@@ -19,3 +19,40 @@ export class LoginRequest {
   @ApiProperty()
   password: string;
 }
+
+export class CourseStudentRequest {
+  @ApiProperty()
+  hasView: boolean;
+}
+
+export class UserResponse {
+  @ApiProperty()
+  id: number;
+  @ApiProperty()
+  username: string;
+  @ApiProperty()
+  email: string;
+}
+
+export class CourseStudentResponse {
+  @ApiProperty()
+  id: number;
+  @ApiProperty()
+  student: UserResponse;
+  @ApiProperty()
+  hasView: boolean;
+}
+
+export class HealthyResponse {
+  @ApiProperty()
+  status: string;
+}
+
+export class ErrorResponse {
+  @ApiProperty()
+  message: string;
+  @ApiProperty()
+  error: string;
+  @ApiProperty()
+  statusCode: number;
+}

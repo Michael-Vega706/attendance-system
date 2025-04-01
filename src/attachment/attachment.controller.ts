@@ -38,7 +38,7 @@ export class AttachmentController {
   @Get('/:id')
   @ApiResponse({ status: HttpStatus.OK, type: AttachmentResponse })
   getOneAttachment(@Param('id') id: number) {
-    return this.attachmentService.findOnebyId(id);
+    return this.attachmentService.findOneById(id);
   }
 
   @Delete('/:id')

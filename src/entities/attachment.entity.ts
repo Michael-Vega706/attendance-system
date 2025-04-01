@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Lesson } from './lesson.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Attachment {
@@ -15,7 +8,4 @@ export class Attachment {
   name: string;
   @Column()
   url: string;
-  @ManyToMany(() => Lesson)
-  @JoinTable()
-  students?: Lesson[];
 }

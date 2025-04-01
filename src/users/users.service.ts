@@ -57,4 +57,8 @@ export class UsersService {
     }
     throw new NotFoundException('User not found.');
   }
+
+  async findByType(userType: string) {
+    return this.userRepository.find({ where: { userType } });
+  }
 }

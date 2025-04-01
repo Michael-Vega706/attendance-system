@@ -78,13 +78,10 @@ export class AuthService {
 
   async resetPassword(email: string) {
     const userDB = await this.userService.findOneByEmail(email);
-    console.log(email);
     if (userDB) {
       const newPassword = this.generatePasswordRandom();
-      console.log('New Password', newPassword);
       await this.mailService.sendResetPassword(userDB.email, newPassword);
       userDB.password = await bcrypt.hash(newPassword || '', 12);
-      console.log('User', userDB);
       await this.userService.upsertUser(userDB);
       return { message: 'We sended your new password to your email.' };
     }

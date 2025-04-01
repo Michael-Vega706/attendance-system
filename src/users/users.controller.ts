@@ -17,4 +17,9 @@ export class UsersController {
   listUsers() {
     return this.usersService.findAll();
   }
+
+  @Get('/teacher/list')
+  listUsersByTeacherType() {
+    return this.usersService.findByType('TEACHER');
+  }
 }

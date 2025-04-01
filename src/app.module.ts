@@ -18,6 +18,7 @@ import { Attachment } from './entities/attachment.entity';
 import { AttachmentModule } from './attachment/attachment.module';
 import { LessonModule } from './lesson/lesson.module';
 import { CourseModule } from './course/course.module';
+import { CourseStudent } from './entities/course-student.entity';
 
 @Module({
   imports: [
@@ -33,7 +34,15 @@ import { CourseModule } from './course/course.module';
       password: 'root',
       database: 'attendance-system',
       autoLoadEntities: true,
-      entities: [User, Role, Permission, Course, Lesson, Attachment],
+      entities: [
+        User,
+        Role,
+        Permission,
+        Course,
+        CourseStudent,
+        Lesson,
+        Attachment,
+      ],
       synchronize: true,
     }),
     MailerModule.forRootAsync({

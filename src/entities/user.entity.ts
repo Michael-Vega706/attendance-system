@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { Role } from './role.entity';
 
-enum UserType {
+export enum UserType {
   TEACHER = 'TEACHER',
   STUDENT = 'STUDENT',
 }
