@@ -14,6 +14,12 @@ import { PermissionModel, RoleModel } from '../models/security.model';
 import { RolesService } from './roles.service';
 import { AuthGuard } from '../guards/auth/auth.guard';
 import { PermissionGuard } from '../guards/permission/permission.guard';
+import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import {
+  ErrorResponse,
+  RoleRequest,
+  RoleResponse,
+} from 'src/responses/auth.response';
 
 @Controller('roles')
 export class RolesController {
@@ -21,6 +27,11 @@ export class RolesController {
 
   @Post('/')
   @UseGuards(AuthGuard, PermissionGuard)
+  @ApiBody({
+    type: RoleRequest,
+  })
+  @ApiResponse({ status: HttpStatus.CREATED, type: RoleResponse })
+  @ApiResponse({ status: HttpStatus.FORBIDDEN, type: ErrorResponse })
   createRole(@Body() payload: RoleModel) {
     return this.rolesService.insertRole(payload);
   }

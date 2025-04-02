@@ -16,10 +16,15 @@ import {
   AttachmentRequest,
   AttachmentResponse,
 } from 'src/responses/education.response';
+import { CacheService } from 'src/cache/cache.service';
 
 @Controller('attachment')
 export class AttachmentController {
-  constructor(private readonly attachmentService: AttachmentService) {}
+  constructor(
+    private readonly cacheService: CacheService,
+    private readonly attachmentService: AttachmentService,
+  ) {}
+
   @Post('/')
   @ApiBody({
     type: AttachmentRequest,
@@ -37,8 +42,17 @@ export class AttachmentController {
 
   @Get('/:id')
   @ApiResponse({ status: HttpStatus.OK, type: AttachmentResponse })
-  getOneAttachment(@Param('id') id: number) {
-    return this.attachmentService.findOneById(id);
+  async getOneAttachment(@Param('id') id: number) {
+    const key = `/attachment/${id}`;
+    const value = await this.cacheService.get(key);
+    console.log(value);
+    if (value) {
+      return value;
+    } else {
+      const attachmentDB = await this.attachmentService.findOneById(id);
+      await this.cacheService.set(key, attachmentDB);
+      return attachmentDB;
+    }
   }
 
   @Delete('/:id')

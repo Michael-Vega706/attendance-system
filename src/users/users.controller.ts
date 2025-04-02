@@ -1,7 +1,17 @@
-import { Controller, Post, Get, Body, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  Param,
+  UseGuards,
+  HttpStatus,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from '../guards/auth/auth.guard';
 import { RoleModel } from '../models/security.model';
+import { ApiResponse } from '@nestjs/swagger';
+import { UserRegisterResponse } from 'src/responses/auth.response';
 
 @Controller('users')
 export class UsersController {
@@ -14,11 +24,13 @@ export class UsersController {
 
   @Get('/')
   @UseGuards(AuthGuard)
+  @ApiResponse({ status: HttpStatus.OK, type: [UserRegisterResponse] })
   listUsers() {
     return this.usersService.findAll();
   }
 
   @Get('/teacher/list')
+  @ApiResponse({ status: HttpStatus.OK, type: [UserRegisterResponse] })
   listUsersByTeacherType() {
     return this.usersService.findByType('TEACHER');
   }

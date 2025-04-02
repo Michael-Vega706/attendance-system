@@ -19,6 +19,7 @@ import { AttachmentModule } from './attachment/attachment.module';
 import { LessonModule } from './lesson/lesson.module';
 import { CourseModule } from './course/course.module';
 import { CourseStudent } from './entities/course-student.entity';
+import { CacheModule } from './cache/cache.module';
 
 @Module({
   imports: [
@@ -74,6 +75,7 @@ import { CourseStudent } from './entities/course-student.entity';
     AttachmentModule,
     LessonModule,
     CourseModule,
+    CacheModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService],

@@ -1,6 +1,38 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { UserType } from 'src/entities/user.entity';
 
+/* REQUESTS */
+export class LoginRequest {
+  @ApiProperty()
+  username: string;
+  @ApiProperty()
+  password: string;
+}
+export class UserRequest {
+  @ApiProperty()
+  username: string;
+  @ApiProperty()
+  password: string;
+  @ApiProperty()
+  email: string;
+  @ApiProperty({
+    description: 'Type of user, either TEACHER or STUDENT',
+    enum: UserType,
+    example: UserType.STUDENT,
+  })
+  userType: UserType;
+}
+
+export class ResetPasswordRequest {
+  @ApiProperty()
+  email: string;
+}
+
+export class RoleRequest {
+  @ApiProperty()
+  name: string;
+}
+
 /* RESPONSES */
 export class TokenResponse {
   @ApiProperty({
@@ -28,7 +60,7 @@ export class ProfileResponse extends UserResponse {
   @ApiProperty({
     description: 'Type of user, either TEACHER or STUDENT',
     enum: UserType,
-    example: UserType.STUDENT,
+    example: UserType.TEACHER,
   })
   userType: UserType;
   @ApiProperty()
@@ -40,6 +72,11 @@ export class UserRegisterResponse extends ProfileResponse {
   password: string;
   @ApiProperty()
   hasReset: boolean;
+}
+
+export class RoleResponse extends RoleRequest {
+  @ApiProperty()
+  id: number;
 }
 
 export class HealthyResponse {
@@ -59,31 +96,4 @@ export class ErrorResponse {
 export class ResetPasswordResponse {
   @ApiProperty()
   message: string;
-}
-
-/* REQUESTS */
-export class LoginRequest {
-  @ApiProperty()
-  username: string;
-  @ApiProperty()
-  password: string;
-}
-export class UserRequest {
-  @ApiProperty()
-  username: string;
-  @ApiProperty()
-  password: string;
-  @ApiProperty()
-  email: string;
-  @ApiProperty({
-    description: 'Type of user, either TEACHER or STUDENT',
-    enum: UserType,
-    example: UserType.STUDENT,
-  })
-  userType: UserType;
-}
-
-export class ResetPasswordRequest {
-  @ApiProperty()
-  email: string;
 }
