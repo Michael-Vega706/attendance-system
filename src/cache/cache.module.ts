@@ -8,8 +8,9 @@ import { CacheService } from './cache.service';
     {
       provide: 'CACHE_INSTANCE',
       useFactory: () => {
-        const secondary = createKeyv('redis://localhost:6379');
-        return new Cacheable({ secondary, ttl: '4h' });
+        const redisUrl = process.env.REDIS_URL;
+        const secondary = createKeyv(redisUrl);
+        return new Cacheable({ secondary, ttl: 14400000 });
       },
     },
     CacheService,
