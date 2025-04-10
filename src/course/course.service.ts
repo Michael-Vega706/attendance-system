@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CourseStudent } from 'src/entities/course-student.entity';
-import { Course } from 'src/entities/course.entity';
-import { UserType } from 'src/entities/user.entity';
-import { CourseModel } from 'src/models/education.model';
-import { UsersService } from 'src/users/users.service';
+import { CourseStudent } from '../entities/course-student.entity';
+import { Course } from '../entities/course.entity';
+import { UserType } from '../entities/user.entity';
+import { CourseModel } from '../models/education.model';
+import { UsersService } from '../users/users.service';
 import { Repository } from 'typeorm';
 
 @Injectable()

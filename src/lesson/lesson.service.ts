@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Attachment } from 'src/entities/attachment.entity';
-import { Lesson } from 'src/entities/lesson.entity';
-import { LessonModel } from 'src/models/education.model';
+import { Attachment } from '../entities/attachment.entity';
+import { Lesson } from '../entities/lesson.entity';
+import { LessonModel } from '../models/education.model';
 import { Repository } from 'typeorm';
 
 @Injectable()

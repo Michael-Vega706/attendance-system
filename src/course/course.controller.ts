@@ -18,9 +18,9 @@ import {
   CourseStudentRequest,
   CourseStudentResponse,
   CourseStudentsResponse,
-} from 'src/responses/education.response';
-import { CourseModel } from 'src/models/education.model';
-import { ErrorResponse } from 'src/responses/auth.response';
+} from '../responses/education.response';
+import { CourseModel } from '../models/education.model';
+import { ErrorResponse } from '../responses/auth.response';
 
 @Controller('course')
 export class CourseController {

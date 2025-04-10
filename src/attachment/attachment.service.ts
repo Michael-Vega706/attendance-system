@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Attachment } from 'src/entities/attachment.entity';
-import { AttachmentModel } from 'src/models/education.model';
+import { Attachment } from '../entities/attachment.entity';
+import { AttachmentModel } from '../models/education.model';
 import { Repository } from 'typeorm';
 
 @Injectable()

@@ -11,7 +11,7 @@ import { UsersService } from './users.service';
 import { AuthGuard } from '../guards/auth/auth.guard';
 import { RoleModel } from '../models/security.model';
 import { ApiResponse } from '@nestjs/swagger';
-import { UserRegisterResponse } from 'src/responses/auth.response';
+import { UserRegisterResponse } from '../responses/auth.response';
 
 @Controller('users')
 export class UsersController {

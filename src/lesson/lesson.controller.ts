@@ -17,9 +17,9 @@ import {
   LessonAttachmentResponse,
   LessonRequest,
   LessonResponse,
-} from 'src/responses/education.response';
-import { LessonModel } from 'src/models/education.model';
-import { ErrorResponse } from 'src/responses/auth.response';
+} from '../responses/education.response';
+import { LessonModel } from '../models/education.model';
+import { ErrorResponse } from '../responses/auth.response';
 
 @Controller('lesson')
 export class LessonController {
@@ -65,7 +65,7 @@ export class LessonController {
         },
       };
     } else {
-      throw new NotFoundException(`Course with id ${id}, not found.`);
+      throw new NotFoundException(`Lesson with id ${id}, not found.`);
     }
   }
 

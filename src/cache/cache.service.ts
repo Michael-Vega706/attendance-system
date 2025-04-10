@@ -16,4 +16,8 @@ export class CacheService {
   async delete(key: string) {
     await this.cache.delete(key);
   }
+
+  async clear() {
+    await this.cache.clear();
+  }
 }

@@ -19,7 +19,7 @@ import {
   ErrorResponse,
   RoleRequest,
   RoleResponse,
-} from 'src/responses/auth.response';
+} from '../responses/auth.response';
 
 @Controller('roles')
 export class RolesController {

@@ -5,18 +5,19 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  NotFoundException,
   Param,
   Post,
   Put,
 } from '@nestjs/common';
-import { AttachmentModel } from 'src/models/education.model';
+import { AttachmentModel } from '../models/education.model';
 import { AttachmentService } from './attachment.service';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
 import {
   AttachmentRequest,
   AttachmentResponse,
-} from 'src/responses/education.response';
-import { CacheService } from 'src/cache/cache.service';
+} from '../responses/education.response';
+import { CacheService } from '../cache/cache.service';
 
 @Controller('attachment')
 export class AttachmentController {
@@ -45,13 +46,16 @@ export class AttachmentController {
   async getOneAttachment(@Param('id') id: number) {
     const key = `/attachment/${id}`;
     const value = await this.cacheService.get(key);
-    console.log(value);
     if (value) {
       return value;
     } else {
       const attachmentDB = await this.attachmentService.findOneById(id);
-      await this.cacheService.set(key, attachmentDB);
-      return attachmentDB;
+      if (attachmentDB) {
+        await this.cacheService.set(key, attachmentDB);
+        return attachmentDB;
+      } else {
+        throw new NotFoundException(`Attachment with id ${id}, not found.`);
+      }
     }
   }
 
@@ -61,7 +65,9 @@ export class AttachmentController {
     status: HttpStatus.NO_CONTENT,
     description: 'Without description',
   })
-  deleteOneAttachment(@Param('id') id: number) {
+  async deleteOneAttachment(@Param('id') id: number) {
+    const key = `/attachment/${id}`;
+    await this.cacheService.delete(key);
     return this.attachmentService.deleteOneById(id);
   }
 
@@ -70,10 +76,13 @@ export class AttachmentController {
     type: AttachmentRequest,
   })
   @HttpCode(HttpStatus.NO_CONTENT)
-  updateOneAttachment(
+  async updateOneAttachment(
     @Param('id') id: number,
     @Body() payload: AttachmentModel,
   ) {
-    return this.attachmentService.updateOneById(id, payload);
+    const key = `/attachment/${id}`;
+    const attachmentDB = await this.attachmentService.updateOneById(id, payload);
+    await this.cacheService.set(key, attachmentDB);
+    return attachmentDB;
   }
 }

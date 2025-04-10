@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { UserType } from 'src/entities/user.entity';
+import { UserType } from '../entities/user.entity';
 
 /* REQUESTS */
 export class LoginRequest {
