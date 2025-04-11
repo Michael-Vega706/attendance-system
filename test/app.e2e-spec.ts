@@ -36,6 +36,12 @@ describe('AppController (e2e)', () => {
 
   let roleStudent: Role;
   let permissionProfile: Permission;
+  let permissionRoles: Permission;
+  let permissionPermissions: Permission;
+  let permissionUsers: Permission;
+  let permissionAttachments: Permission;
+  let permissionCourses: Permission;
+  let permissionLessons: Permission;
 
   let roleTest: Role;
   let permissionTest: Permission;
@@ -121,18 +127,42 @@ describe('AppController (e2e)', () => {
       name: 'GET:/auth/profile',
     });
 
-    const permission2 = await permissionRepository.save({
-      name: 'POST:/roles/',
+    permissionRoles = await permissionRepository.save({
+      name: '*:/roles',
     });
 
-    const permission3 = await permissionRepository.save({
-      name: 'POST:/permissions/',
+    permissionPermissions = await permissionRepository.save({
+      name: '*:/permissions',
+    });
+
+    permissionUsers = await permissionRepository.save({
+      name: '*:/users',
+    });
+
+    permissionAttachments = await permissionRepository.save({
+      name: '*:/attachments',
+    });
+
+    permissionCourses = await permissionRepository.save({
+      name: '*:/courses',
+    });
+
+    permissionLessons = await permissionRepository.save({
+      name: '*:/lessons',
     });
 
     // Crear un rol y asignarle el permiso
     const role = await roleRepository.save({
       name: 'TEACHER',
-      permissions: [permissionProfile, permission2, permission3]
+      permissions: [
+        permissionProfile,
+        permissionRoles,
+        permissionPermissions,
+        permissionUsers,
+        permissionAttachments,
+        permissionCourses,
+        permissionLessons
+      ]
     });
 
     // Crear un usuario y asignarle el rol
@@ -220,11 +250,15 @@ describe('AppController (e2e)', () => {
 
   it('/users/ (GET)', async () => {
     const response = await request(app.getHttpServer())
-      .get('/users/')
+      .get('/users')
+      .query({
+        page: 1,
+        limit: 10,
+      })
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.length).toBe(3);
+    expect(response.body.total).toBe(3);
   });
 
   it('/users/teacher/list (GET)', async () => {
@@ -296,8 +330,8 @@ describe('AppController (e2e)', () => {
       .send({
         name: 'ADMIN2',
       });
-      
-      expect(response.status).toBe(404);
+
+    expect(response.status).toBe(404);
   })
 
   it('/roles/:id (DELETE)', async () => {
@@ -342,7 +376,7 @@ describe('AppController (e2e)', () => {
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.length).toBe(4);
+    expect(response.body.length).toBe(8);
   });
 
   it('/permissions/:id (PUT)', async () => {
@@ -368,7 +402,7 @@ describe('AppController (e2e)', () => {
       .set('Authorization', `Bearer ${token}`);
 
     expect(response2.status).toBe(200);
-    expect(response2.body.length).toBe(3);
+    expect(response2.body.length).toBe(7);
   });
 
   it('/roles/:id/assign-permissions (POST)', async () => {

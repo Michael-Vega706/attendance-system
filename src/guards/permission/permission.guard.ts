@@ -16,7 +16,12 @@ export class PermissionGuard implements CanActivate {
     if (request['url'].includes('?')) {
       url = request['url'].split('?')[0];
     }
-    const baseUrl = `/${url.split('/')[1]}`;
+    let baseUrl = url;
+    if(!url.includes('/auth/profile')) {
+      baseUrl = `/${url.split('/')[1]}`;
+    } else {
+      baseUrl = '/auth/profile';
+    }
     if (userDB) {
       if (userDB.roles) {
         if (userDB.roles.length > 0) {
@@ -24,7 +29,7 @@ export class PermissionGuard implements CanActivate {
           if (roles.permissions) {
             for (const permission of roles.permissions) {
               if (
-                permission.name.includes(`${request['method']}:${baseUrl}}`)
+                permission.name.includes(`${request['method']}:${baseUrl}`)
                 || permission.name.includes(`*:${baseUrl}`)
               ) {
                 return true;

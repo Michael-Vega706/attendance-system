@@ -13,7 +13,7 @@ import { AuthGuard } from '../guards/auth/auth.guard';
 import { RoleModel } from '../models/security.model';
 import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { UserRegisterResponse, UserSearchQuery, UserSearchResponse } from '../responses/auth.response';
-import { PermissionGuard } from 'src/guards/permission/permission.guard';
+import { PermissionGuard } from '../guards/permission/permission.guard';
 
 @Controller('users')
 @ApiBearerAuth()
