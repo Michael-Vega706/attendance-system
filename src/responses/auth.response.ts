@@ -28,6 +28,34 @@ export class ResetPasswordRequest {
   email: string;
 }
 
+export class UserSearchQuery {
+  @ApiProperty({
+    required: false,
+  })
+  username: string;
+  @ApiProperty({
+    required: false,
+  })
+  email: string;
+  @ApiProperty({
+    required: false,
+    enum: UserType,
+  })
+  userType: UserType;
+  @ApiProperty({
+    required: false,
+  })
+  isActive: boolean;
+  @ApiProperty({
+    default: 1,
+  })
+  page: number;
+  @ApiProperty({
+    default: 10,
+  })
+  limit: number;
+}
+
 export class RoleRequest {
   @ApiProperty()
   name: string;
@@ -65,6 +93,17 @@ export class ProfileResponse extends UserResponse {
   userType: UserType;
   @ApiProperty()
   isActive: boolean;
+}
+
+export class UserSearchResponse {
+  @ApiProperty()
+  total: number;
+  @ApiProperty()
+  page: number;
+  @ApiProperty()
+  limit: number;
+  @ApiProperty({ type: [ProfileResponse] })
+  users: ProfileResponse[];
 }
 
 export class UserRegisterResponse extends ProfileResponse {

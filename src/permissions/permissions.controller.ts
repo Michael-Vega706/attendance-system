@@ -14,8 +14,10 @@ import { PermissionsService } from './permissions.service';
 import { PermissionModel } from '../models/security.model';
 import { AuthGuard } from '../guards/auth/auth.guard';
 import { PermissionGuard } from '../guards/permission/permission.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('permissions')
+@ApiBearerAuth()
 export class PermissionsController {
   constructor(private permissionsService: PermissionsService) {}
 

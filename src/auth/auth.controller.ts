@@ -15,7 +15,7 @@ import { AuthGuard } from '../guards/auth/auth.guard';
 
 import { UserModel, UserPayload } from '../models/user.model';
 import { PermissionGuard } from '../guards/permission/permission.guard';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiResponse } from '@nestjs/swagger';
 import {
   LoginRequest,
   ProfileResponse,
@@ -51,6 +51,7 @@ export class AuthController {
   }
 
   @Get('/profile')
+  @ApiBearerAuth()
   @UseGuards(AuthGuard, PermissionGuard)
   @ApiResponse({ status: HttpStatus.OK, type: ProfileResponse })
   profile(@Request() request: { user: UserPayload }) {
@@ -59,6 +60,7 @@ export class AuthController {
   }
 
   @Get('/profile-2')
+  @ApiBearerAuth()
   @ApiResponse({ status: HttpStatus.OK, type: ProfileResponse })
   @UseGuards(AuthGuard, PermissionGuard)
   profile2(@Request() request: { user: UserPayload }) {

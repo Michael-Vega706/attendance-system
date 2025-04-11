@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { AttachmentModel } from '../models/education.model';
 import { AttachmentService } from './attachment.service';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiResponse } from '@nestjs/swagger';
 import {
   AttachmentRequest,
   AttachmentResponse,
@@ -20,6 +20,7 @@ import {
 import { CacheService } from '../cache/cache.service';
 
 @Controller('attachment')
+@ApiBearerAuth()
 export class AttachmentController {
   constructor(
     private readonly cacheService: CacheService,

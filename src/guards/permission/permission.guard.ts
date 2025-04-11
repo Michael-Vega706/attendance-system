@@ -4,7 +4,7 @@ import { UsersService } from '../../users/users.service';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService: UsersService) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request: {
@@ -12,6 +12,11 @@ export class PermissionGuard implements CanActivate {
     } = context.switchToHttp().getRequest();
     const userReq = request.user;
     const userDB = await this.usersService.findById(userReq.id);
+    let url = request['url'];
+    if (request['url'].includes('?')) {
+      url = request['url'].split('?')[0];
+    }
+    const baseUrl = `/${url.split('/')[1]}`;
     if (userDB) {
       if (userDB.roles) {
         if (userDB.roles.length > 0) {
@@ -19,10 +24,8 @@ export class PermissionGuard implements CanActivate {
           if (roles.permissions) {
             for (const permission of roles.permissions) {
               if (
-                permission.name.includes(
-                  `${request['method']}:${request['url']}}`,
-                ) ||
-                request['url'].includes(permission.name.split(':')[1])
+                permission.name.includes(`${request['method']}:${baseUrl}}`)
+                || permission.name.includes(`*:${baseUrl}`)
               ) {
                 return true;
               }

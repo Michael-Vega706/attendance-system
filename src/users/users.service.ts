@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
-import { UserModel } from '../models/user.model';
+import { UserModel, UserSearchModel } from '../models/user.model';
 import { Repository } from 'typeorm';
 
 import * as bcrypt from 'bcryptjs';
@@ -12,7 +12,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   async findOne(username: string) {
     return await this.userRepository.findOneBy({ username });
@@ -45,8 +45,26 @@ export class UsersService {
     return await this.userRepository.save(payload);
   }
 
-  async findAll() {
-    return await this.userRepository.find();
+  async findAll(payload: UserSearchModel) {
+    const { username, email, userType, isActive, page, limit } = payload;
+    const skip = (page - 1) * limit;
+    //return await this.userRepository.find();
+    const queryBuilder = this.userRepository.createQueryBuilder('user');
+    if (username) {
+      queryBuilder.andWhere('user.username like :username', { username: `%${username}%` });
+    }
+    if (email) {
+      queryBuilder.andWhere('user.email like :email', { email: `%${email}%` });
+    }
+    if (userType) {
+      queryBuilder.andWhere('user.userType = :userType', { userType });
+    }
+    if (isActive) {
+      queryBuilder.andWhere('user.isActive = :isActive', { isActive });
+    }
+    queryBuilder.skip(skip).take(limit);
+    const [users, total] = await queryBuilder.getManyAndCount();
+    return { users, total, page: Number(page), limit: Number(limit) };
   }
 
   async assignRoles(id: number, roles: RoleModel[]) {

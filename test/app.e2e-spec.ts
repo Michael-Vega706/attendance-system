@@ -289,6 +289,17 @@ describe('AppController (e2e)', () => {
     expect(response3.body.length).toBe(3);
   });
 
+  it('/roles/:id (PUT/No exist)', async () => {
+    const response = await request(app.getHttpServer())
+      .put(`/roles/${3}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        name: 'ADMIN2',
+      });
+      
+      expect(response.status).toBe(404);
+  })
+
   it('/roles/:id (DELETE)', async () => {
     const response = await request(app.getHttpServer())
       .delete(`/roles/${roleTest.id}`)
@@ -302,6 +313,14 @@ describe('AppController (e2e)', () => {
 
     expect(response2.status).toBe(200);
     expect(response2.body.length).toBe(2);
+  });
+
+  it('/roles/:id (DELETE/No exist)', async () => {
+    const response = await request(app.getHttpServer())
+      .delete(`/roles/${3}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(response.status).toBe(404);
   });
 
   it('/permissions/ (POST)', async () => {
@@ -545,6 +564,12 @@ describe('AppController (e2e)', () => {
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(204);
+
+    const response2 = await request(app.getHttpServer())
+      .get(`/course/${course.id}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(response2.status).toBe(404);
   });
 
   it('/lesson/ (POST)', async () => {

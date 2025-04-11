@@ -14,7 +14,7 @@ import { PermissionModel, RoleModel } from '../models/security.model';
 import { RolesService } from './roles.service';
 import { AuthGuard } from '../guards/auth/auth.guard';
 import { PermissionGuard } from '../guards/permission/permission.guard';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import {
   ErrorResponse,
   RoleRequest,
@@ -22,6 +22,7 @@ import {
 } from '../responses/auth.response';
 
 @Controller('roles')
+@ApiBearerAuth()
 export class RolesController {
   constructor(private rolesService: RolesService) {}
 
@@ -37,6 +38,7 @@ export class RolesController {
   }
 
   @Get('/')
+  @UseGuards(AuthGuard, PermissionGuard)
   listRoles() {
     return this.rolesService.findAll();
   }

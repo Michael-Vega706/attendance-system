@@ -11,7 +11,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { CourseService } from './course.service';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiResponse } from '@nestjs/swagger';
 import {
   CourseRequest,
   CourseResponse,
@@ -23,6 +23,7 @@ import { CourseModel } from '../models/education.model';
 import { ErrorResponse } from '../responses/auth.response';
 
 @Controller('course')
+@ApiBearerAuth()
 export class CourseController {
   constructor(private readonly courseService: CourseService) {}
 

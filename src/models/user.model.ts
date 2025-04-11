@@ -1,4 +1,5 @@
-import { IsString, IsEmail, MinLength, IsEnum } from 'class-validator';
+import { IsString, IsEmail, MinLength, IsEnum, IsOptional, IsNumber, IsBoolean } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class UserModel {
   id?: number;
@@ -29,4 +30,21 @@ export class UserPayload {
   email: string;
   iat: number;
   exp: number;
+}
+
+export class UserSearchModel {
+  @IsOptional()
+  @IsString()
+  username?: string;
+  @IsOptional()
+  @IsEmail()
+  email?: string;
+  @IsOptional()
+  @IsString()
+  userType?: string;
+  @IsOptional()
+  @IsBoolean()
+  isActive?: boolean;
+  page: number;
+  limit: number;
 }

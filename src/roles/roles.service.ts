@@ -16,10 +16,18 @@ export class RolesService {
   }
 
   async updateRole(id: number, payload: RoleModel) {
+    const role = await this.findOne(id);
+    if (!role) {
+      throw new NotFoundException('Role not found');
+    }
     await this.roleRepository.update(id, payload);
   }
 
   async deleteRole(id: number) {
+    const role = await this.findOne(id);
+    if (!role) {
+      throw new NotFoundException('Role not found');
+    }
     await this.roleRepository.delete({ id });
   }
 

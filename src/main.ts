@@ -9,11 +9,17 @@ async function bootstrap() {
     .setTitle('Attendance System - API')
     .setDescription('API to attendance system by institutions.')
     .setVersion('1.0')
+    .setExternalDoc('Swagger/ui.json', '/swagger/ui.json')
+    .addBearerAuth()
     .build();
+
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, documentFactory, {
-    jsonDocumentUrl: 'swagger/json',
+    jsonDocumentUrl: 'swagger/ui.json',
     explorer: true,
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
   });
 
   await app.listen(process.env.PORT ?? 3000);
