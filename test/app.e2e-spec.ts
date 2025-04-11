@@ -493,15 +493,26 @@ describe('AppController (e2e)', () => {
     expect(response2.body.name).toBe('testattachment');
   });
 
-  it.skip('/attachment/:id (DELETE)', async () => {
+  it('/attachment/:id (DELETE)', async () => {
     const response = await request(app.getHttpServer())
-      .delete(`/attachment/${attachment.id}`)
+      .post('/attachment/')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        name: 'testattachment',
+        url: 'https://www.google.com',
+      });
+
+    const attachmentId = response.body.id;
+    expect(response.status).toBe(201);
+
+    const response1 = await request(app.getHttpServer())
+      .delete(`/attachment/${attachmentId}`)
       .set('Authorization', `Bearer ${token}`);
 
-    expect(response.status).toBe(204);
+    expect(response1.status).toBe(204);
 
     const response2 = await request(app.getHttpServer())
-      .get(`/attachment/${attachment.id}`)
+      .get(`/attachment/${attachmentId}`)
       .set('Authorization', `Bearer ${token}`);
 
     expect(response2.status).toBe(404);
@@ -584,26 +595,64 @@ describe('AppController (e2e)', () => {
     expect(response2.body[0].hasView).toBeTruthy();
   });
 
-  it.skip('/course/:id/assign-students (POST/Remove students)', async () => {
+  it('/course/:id/assign-students (POST/Remove students)', async () => {
     const response = await request(app.getHttpServer())
-      .post(`/course/${course.id}/assign-students`)
+      .post('/course/')
       .set('Authorization', `Bearer ${token}`)
-      .send([]);
+      .send({
+        name: 'testcourse',
+      });
+    const courseId = response.body.id;
     expect(response.status).toBe(201);
-  });
-
-  it.skip('/course/:id (DELETE)', async () => {
-    const response = await request(app.getHttpServer())
-      .delete(`/course/${course.id}`)
-      .set('Authorization', `Bearer ${token}`);
-
-    expect(response.status).toBe(204);
 
     const response2 = await request(app.getHttpServer())
-      .get(`/course/${course.id}`)
+      .post(`/course/${courseId}/assign-students`)
+      .set('Authorization', `Bearer ${token}`)
+      .send([userStudent.id]);
+    expect(response2.status).toBe(201);
+
+    const response3 = await request(app.getHttpServer())
+      .get(`/course/${courseId}/students`)
       .set('Authorization', `Bearer ${token}`);
 
-    expect(response2.status).toBe(404);
+    expect(response3.status).toBe(200);
+    expect(response3.body.length).toBe(1);
+
+    const response4 = await request(app.getHttpServer())
+      .post(`/course/${courseId}/assign-students`)
+      .set('Authorization', `Bearer ${token}`)
+      .send([]);
+    expect(response4.status).toBe(201);
+
+    const response5 = await request(app.getHttpServer())
+      .get(`/course/${courseId}/students`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(response5.status).toBe(200);
+    expect(response5.body.length).toBe(0);
+  });
+
+  it('/course/:id (DELETE)', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/course/')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        name: 'testcourse',
+      });
+    const courseId = response.body.id;
+    expect(response.status).toBe(201);
+
+    const response2 = await request(app.getHttpServer())
+      .delete(`/course/${courseId}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(response2.status).toBe(204);
+
+    const response3 = await request(app.getHttpServer())
+      .get(`/course/${courseId}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(response3.status).toBe(404);
   });
 
   it('/lesson/ (POST)', async () => {
@@ -663,15 +712,27 @@ describe('AppController (e2e)', () => {
     expect(response2.body.name).toBe('testlesson2');
   });
 
-  it.skip('/lesson/:id (DELETE)', async () => {
+  it('/lesson/:id (DELETE)', async () => {
     const response = await request(app.getHttpServer())
-      .delete(`/lesson/${lesson.id}`)
+      .post('/lesson/')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        name: 'testlesson',
+        course: course.id,
+        teacher: userTeacher.id,
+      });
+
+    const lessonId = response.body.id;
+    expect(response.status).toBe(201);
+
+    const response1 = await request(app.getHttpServer())
+      .delete(`/lesson/${lessonId}`)
       .set('Authorization', `Bearer ${token}`);
 
-    expect(response.status).toBe(204);
+    expect(response1.status).toBe(204);
 
     const response2 = await request(app.getHttpServer())
-      .get(`/lesson/${lesson.id}`)
+      .get(`/lesson/${lessonId}`)
       .set('Authorization', `Bearer ${token}`);
 
     expect(response2.status).toBe(404);
